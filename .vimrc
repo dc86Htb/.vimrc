@@ -83,8 +83,18 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree'
 call vundle#end()
 filetype plugin indent on
-colorscheme jellybeans
+colorscheme default
 nnoremap <C-i> :tabn<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-p> :tabnew<CR>
+let g:netrw_banner = 0
+let g:netrw_keepdir = 0
+let g:netrw_winsize = 20
+let g:netrw_liststyle = 3
+let g:netrw_localcopydircmd = 'cp -r'
+hi! link netrwMarkFile Search
+nmap <C-m> :Lexplore<CR>
 
+:PluginInstall
+:q
+:set nolist
