@@ -1,7 +1,9 @@
 " VIM Configuration File
 " Description: Optimized for C/C++ development, but useful also for other things.
 " Author: Gerhard Gappmeier
-" set UTF-8 encoding
+ map <F8> : !clang % && ./a.out <CR>
+map <F5> : python3 %
+ " set UTF-8 encoding
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
@@ -46,7 +48,6 @@ imap <F2> <ESC>:w<CR>i
 " switch between header/source with F4
 map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 " recreate tags file with F5
-map <F5> :!ctags -R –c++-kinds=+p –fields=+iaS –extra=+q .<CR>
 " create doxygen comment
 map <F6> :Dox<CR>
 " build using makeprg with <F7>
@@ -79,6 +80,8 @@ filetype plugin indent on
 colorscheme default
 nnoremap <C-i> :tabn<CR>
 nnoremap <C-p> :tabnew<CR>
+nnoremap <C-t> :NERDTreeToggle <CR>
+let g:NERDTreeWinPos = "right"
 let g:netrw_banner = 0
 let g:netrw_keepdir = 0
 let g:netrw_winsize = 20
@@ -119,7 +122,7 @@ Plug 'fatih/vim-go', { 'tag': '*' }
 
 " Plugin options
 Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
-
+Plug 'github/copilot.vim'
 " Plugin outside ~/.vim/plugged with post-update hook
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " Use release branch (recommend)
@@ -148,53 +151,6 @@ call plug#end()
 
 
 
-" File: autoclose.vim
-" Author: Karl Guertin <grayrest@gr.ayre.st>
-" Version: 1.2
-" Last Modified: June 18, 2009
-" Description: AutoClose, closes what's opened.
-"
-"    This plugin closes opened parenthesis, braces, brackets, quotes as you
-"    type them. As of 1.1, if you type the open brace twice ({{), the closing
-"    brace will be pushed down to a new line.
-"
-"    You can enable or disable this plugin by typing \a (or <Leader>a if you
-"    changed your Leader char). You can define your own mapping and will need
-"    to do so if you have something else mapped to \a since this plugin won't
-"    clobber your mapping. Here's how to map \x:
-"
-"       nmap <Leader>x <Plug>ToggleAutoCloseMappings
-"
-"    You'll also probably want to know you can type <C-V> (<C-Q> if mswin is
-"    set) and the next character you type doesn't have mappings applied. This
-"    is useful when you want to insert only an opening paren or something.
-"
-"    NOTE: If you're using this on a terminal and your arrow keys are broken,
-"          be sure to :set ttimeout and :set ttimeoutlen=100
-"
-"    Version Changes: --------------------------------------------------{{{2
-"    1.2   -- Fixed some edge cases where double the closing characters are
-"             entered when exiting insert mode.
-"             Finally (!) reproduced the arrow keys problem other people were
-"             running into and fixed.
-"             Typing a closing character will now behave consistently (jump
-"             out) regardless of the plugin's internal state.
-"
-"             As a part of the close fix, I've opted to not try tracking the
-"             position of the closing characters through all the things that
-"             could be done with them, so arrowing/jumping around and not
-"             winding up back where you started will cause the input to not be
-"             repeatable.
-"             June 18, 2009
-"    1.1.2 -- Fixed a mapping typo and caught a double brace problem,
-"             September 20, 2007
-"    1.1.1 -- Missed a bug in 1.1, September 19, 2007
-"    1.1   -- When not inserting at the end, previous version would eat chars
-"             at end of line, added double open->newline, September 19, 2007
-"    1.0.1 -- Cruft from other parts of the mapping, knew I shouldn't have
-"             released the first as 1.0, April 3, 2007
-
-" Setup -----------------------------------------------------{{{2
 if exists('g:autoclose_loaded') || &cp
     finish
 endif
@@ -224,7 +180,6 @@ fun <SID>ToggleAutoCloseMappings() " --- {{{2
         iunmap {
         iunmap }
         iunmap <BS>
-        iunmap <C-h>
         iunmap <Esc>
         let g:autoclose_on = 0
         echo "AutoClose Off"
@@ -389,9 +344,22 @@ if g:autoclose_on
 endif
 " vim: set ft=vim ff=unix et sw=4 ts=4 :
 " vim600: set foldmethod=marker foldmarker={{{,}}} foldlevel=1 :
+"
+"
+"
+"
+"
+"
+filetype plugin on
+au FileType php setl ofu=phpcomplete#CompletePHP
+au FileType ruby,eruby setl ofu=rubycomplete#Complete
+au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
+au FileType c setl ofu=ccomplete#CompleteCpp
+au FileType css setl ofu=csscomplete#CompleteCSS
 
 
-
-
-
-
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+inoremap <C-k> <up>
+inoremap <C-j> <down>
+inoremap <C-/> :w! <CR>
