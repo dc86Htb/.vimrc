@@ -2,7 +2,8 @@
 " Description: Optimized for C/C++ development, but useful also for other things.
 " Author: Gerhard Gappmeier
  map <F8> : !clang % && ./a.out <CR>
-map <F5> : python3 %
+map <F12> : !cargo run
+ map <F5> : python3 %
  " set UTF-8 encoding
 set enc=utf-8
 set fenc=utf-8
@@ -55,7 +56,6 @@ map <F7> :make<CR>
 " build using makeprg with <S-F7>
 map <S-F7> :make clean all<CR>
 " goto definition with F12
-map <F12> <C-]>
 " in diff mode we use the spell check keys for merging
 if &diff
   ” diff settings
@@ -109,7 +109,7 @@ Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
 " Multiple Plug commands can be written in a single line using | separators
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
+Plug 'rust-lang/rust.vim'
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
